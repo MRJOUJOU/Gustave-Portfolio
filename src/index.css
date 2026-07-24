@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------
+   DESIGN TOKENS — "Access Panel" system
+   Two premium DARK variants — never a white/light flash:
+   "bleu" (deep navy, default) and "noir" (near-black).
+   Toggling only ever crossfades between two dark palettes.
+--------------------------------------------------- */
+:root {
+  --bg: #0A0E1A;
+  --bg-panel: #10182A;
+  --bg-panel-2: #161F35;
+  --bg-panel-hover: #1B2540;
+  --border: rgba(233, 236, 244, 0.09);
+  --border-strong: rgba(233, 236, 244, 0.18);
+
+  --text-primary: #EDEFF6;
+  --text-secondary: #B7BED0;
+  --text-muted: #7B8399;
+
+  --accent-cyan: #3ED9C5;
+  --accent-cyan-dim: rgba(62, 217, 197, 0.14);
+  --accent-amber: #F5A623;
+  --accent-amber-dim: rgba(245, 166, 35, 0.14);
+  --accent-red: #EF5B5B;
+
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --shadow-panel: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px -20px rgba(0,0,0,0.6);
+  color-scheme: dark;
+}
+
+.theme-noir {
+  --bg: #0A0A0B;
+  --bg-panel: #131314;
+  --bg-panel-2: #1A1A1C;
+  --bg-panel-hover: #212123;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --text-primary: #F2F1EE;
+  --text-secondary: #B9B7B2;
+  --text-muted: #817F7A;
+
+  --accent-cyan: #35D6BE;
+  --accent-cyan-dim: rgba(53, 214, 190, 0.14);
+  --accent-amber: #F0A93A;
+  --accent-amber-dim: rgba(240, 169, 58, 0.14);
+  --accent-red: #EF5B5B;
+
+  --shadow-panel: 0 1px 0 rgba(255,255,255,0.03) inset, 0 20px 40px -20px rgba(0,0,0,0.7);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--bg-panel);
+  --color-panel-2: var(--bg-panel-2);
+  --color-panel-hover: var(--bg-panel-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-cyan: var(--accent-cyan);
+  --color-cyan-dim: var(--accent-cyan-dim);
+  --color-amber: var(--accent-amber);
+  --color-amber-dim: var(--accent-amber-dim);
+  --color-red: var(--accent-red);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::selection {
+  background: var(--accent-cyan);
+  color: #06110F;
+}
+
+/* Scan-line ambient background texture */
+.scan-grid {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Section eyebrow label, e.g. // 02_COMPETENCES */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+.panel {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-panel);
+}
+
+/* Blinking terminal cursor */
+.cursor-blink::after {
+  content: '_';
+  color: var(--accent-cyan);
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Custom scrollbar to match console aesthetic */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--bg-panel-2);
+  border-radius: 8px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* Premium crossfade between the two dark theme variants. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}

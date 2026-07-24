@@ -18,7 +18,7 @@ export const profile = {
   phone: "+229 90 56 58 82",
   github: "https://github.com/MRJOUJOU",
   linkedin: "https://www.linkedin.com/in/john-gustave-amoule-8b6428281",
-  cvPath: "/cv/CV_John_Gustave_AMOULE.pdf",
+  cvPath: "/Gustave-Portfolio/cv/CV_John_Gustave_AMOULE.pdf",
   // Photo optionnelle : dépose ton fichier ici (public/profile-photo.png) et le site
   // l'affichera automatiquement. Si le fichier n'existe pas, le monogramme "JG" reste
   // affiché à la place — aucune action requise si tu n'as pas encore de photo.

@@ -22,7 +22,7 @@ export const profile = {
   // Photo optionnelle : dépose ton fichier ici (public/profile-photo.png) et le site
   // l'affichera automatiquement. Si le fichier n'existe pas, le monogramme "JG" reste
   // affiché à la place — aucune action requise si tu n'as pas encore de photo.
-  photoPath: "/profile-photo.png",
+ photoPath: "/Gustave-Portfolio/profile-photo.png",
   // Point de départ retenu pour le calcul de l'ancienneté professionnelle (stages inclus).
   // ⚠️ À AJUSTER : mets ici la date réelle de ton tout premier stage en entreprise
   // (format AAAA-MM-JJ). Le chiffre affiché sur le site est recalculé automatiquement

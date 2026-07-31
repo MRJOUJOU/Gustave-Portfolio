@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { FileText, Clock } from "lucide-react";
 import SectionHeading from "../components/SectionHeading";
@@ -6,6 +7,7 @@ import { useI18n } from "../i18n/I18nContext";
 
 export default function Blog() {
   const { t, lang } = useI18n();
+  const [showAllBlog, setShowAllBlog] = useState(false);
 
   const formatDate = (iso) =>
     new Intl.DateTimeFormat(lang === "fr" ? "fr-FR" : lang === "de" ? "de-DE" : "en-US", {
@@ -14,13 +16,15 @@ export default function Blog() {
       year: "numeric",
     }).format(new Date(iso));
 
+  const displayedPosts = showAllBlog ? blogPosts : blogPosts.slice(0, 3);
+
   return (
     <section id="blog" className="py-24 md:py-32 bg-(--color-panel-2)/40">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <SectionHeading index="07" id="BLOG" title={t("blog.title")} subtitle={t("blog.subtitle")} />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogPosts.map((post, i) => (
+          {displayedPosts.map((post, i) => (
             <motion.article
               key={post.id}
               initial={{ opacity: 0, y: 16 }}
@@ -45,6 +49,41 @@ export default function Blog() {
             </motion.article>
           ))}
         </div>
+
+        {blogPosts.length > 3 && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={() => setShowAllBlog((prev) => !prev)}
+              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-panel border border-border hover:border-cyan text-text-secondary hover:text-cyan transition-all duration-300 font-medium text-sm tracking-wide"
+            >
+              {showAllBlog ? (
+                <>
+                  <span>{t("blog.showLess")}</span>
+                  <svg
+                    className="w-4 h-4 transform rotate-180 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                  </svg>
+                </>
+              ) : (
+                <>
+                  <span>{t("blog.showMore")}</span>
+                  <svg
+                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

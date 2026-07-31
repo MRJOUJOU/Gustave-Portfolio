@@ -11,6 +11,11 @@ const ICONS = [Code2, Server, Database, ShieldHalf, Palette];
 export default function About() {
   const { t } = useI18n();
   const [photoFailed, setPhotoFailed] = useState(false);
+  const [showAllFocus, setShowAllFocus] = useState(false);
+
+  const displayedFocusAreas = showAllFocus
+    ? profile.about.focusAreas
+    : profile.about.focusAreas.slice(0, 2);
 
   return (
     <section id="a-propos" className="py-24 md:py-32">
@@ -18,8 +23,6 @@ export default function About() {
         <SectionHeading index="01" id="A_PROPOS" title={t("about.title")} subtitle={t("about.subtitle")} />
 
         <div className="grid lg:grid-cols-[0.38fr_0.62fr] gap-14 items-start">
-          {/* Personal card — shows a real photo if found at /profile-photo.jpg,
-              falls back to the monogram automatically otherwise. */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 18 }}
@@ -31,7 +34,10 @@ export default function About() {
               <motion.div
                 aria-hidden
                 className="absolute -inset-16 opacity-30"
-                style={{ background: "conic-gradient(from 0deg, var(--accent-cyan), transparent 35%, var(--accent-amber), transparent 70%, var(--accent-cyan))" }}
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, var(--accent-cyan), transparent 35%, var(--accent-amber), transparent 70%, var(--accent-cyan))",
+                }}
                 animate={{ rotate: 360 }}
                 transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
               />
@@ -44,7 +50,9 @@ export default function About() {
                 />
               ) : (
                 <div className="relative h-28 w-28 rounded-full bg-(--color-panel-2) border border-(--color-border-strong) flex items-center justify-center mb-5">
-                  <span className="font-display text-4xl font-semibold text-(--color-cyan)">{profile.initials}</span>
+                  <span className="font-display text-4xl font-semibold text-(--color-cyan)">
+                    {profile.initials}
+                  </span>
                 </div>
               )}
               <h3 className="relative font-display text-xl font-semibold text-(--color-text-primary)">
@@ -70,7 +78,7 @@ export default function About() {
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              {profile.about.focusAreas.map((area, i) => {
+              {displayedFocusAreas.map((area, i) => {
                 const Icon = ICONS[i % ICONS.length];
                 return (
                   <motion.div
@@ -90,6 +98,41 @@ export default function About() {
                 );
               })}
             </div>
+
+            {profile.about.focusAreas.length > 2 && (
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setShowAllFocus((prev) => !prev)}
+                  className="group flex items-center gap-2 px-8 py-3 rounded-full bg-panel border border-border hover:border-cyan text-text-secondary hover:text-cyan transition-all duration-300 font-medium text-sm tracking-wide"
+                >
+                  {showAllFocus ? (
+                    <>
+                      <span>{t("about.showLess")}</span>
+                      <svg
+                        className="w-4 h-4 transform rotate-180 transition-transform duration-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                      </svg>
+                    </>
+                  ) : (
+                    <>
+                      <span>{t("about.showMore")}</span>
+                      <svg
+                        className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
